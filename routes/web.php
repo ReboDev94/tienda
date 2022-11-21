@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PrincipalController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +18,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Principal');
+
+Route::get('/', [PrincipalController::class, 'index'])->name('inicio');
+
+Route::prefix('productos')->group(function () {
+    Route::get('visualizar', [ProductoController::class, 'index'])->name('productos');
 });
 
 
