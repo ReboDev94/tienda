@@ -22,7 +22,9 @@ use Inertia\Inertia;
 Route::get('/', [PrincipalController::class, 'index'])->name('inicio');
 
 Route::prefix('productos')->group(function () {
-    Route::get('visualizar', [ProductoController::class, 'index'])->name('productos');
+    Route::get('/', [ProductoController::class, 'index'])->name('productos');
+    Route::get('/nuevo', [ProductoController::class, 'create'])->name('newProduct');
+    Route::post('/save', [ProductoController::class, 'save'])->name('saveProduct');
 });
 
 
