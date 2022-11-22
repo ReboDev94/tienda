@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "@inertiajs/inertia-react";
 import PrincipalLayout from "@/Layouts/PrincipalLayout";
 
-const Nuevo = ({ categorias }) => {
-
-    const { data, setData, post, progress } = useForm({
+const Nuevo = ({ categorias, producto }) => {
+    const [currentImg, setCurrentImg] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
+    const { data, setData, post, patch, progress } = useForm({
+        id: null,
         nombre: "",
         image: null,
         precio: 0,
@@ -17,20 +19,31 @@ const Nuevo = ({ categorias }) => {
 
     function submit(e) {
         e.preventDefault();
-        post(route("saveProduct"), {
-            onSuccess: (page) => {
-                console.log(page);
-            },
-            onError: (errors) => {
-                console.log(errors);
-            },
-        });
+        if (isEdit) {
+            patch(route("updateProduct", { producto: data.id }));
+        } else {
+            post(route("saveProduct"));
+        }
     }
+
+    useEffect(() => {
+        if (producto) {
+            setIsEdit(true);
+            const { id, nombre, precio, categoria_id, image_uri } = producto;
+            setData({ id, nombre, precio, categoria_id });
+            setCurrentImg(image_uri);
+        }
+    }, []);
 
     return (
         <PrincipalLayout>
             <div className="container py-5">
-                <h1 className="mb-4">Nuevo producto</h1>
+                <h1 className="mb-4">
+                    {isEdit ? "Editar producto" : "Nuevo producto"}
+                </h1>
+                {producto && (
+                    <img width={200} src={currentImg} alt="current_img" />
+                )}
                 <form onSubmit={submit}>
                     {progress && (
                         <progress value={progress.percentage} max="100">
@@ -106,14 +119,9 @@ const Nuevo = ({ categorias }) => {
                             accept="image/png, image/gif, image/jpeg"
                             className="form-control"
                             onChange={handleFile}
-                            required
+                            required={!isEdit}
                         />
                     </div>
-                    {/* {progress && (
-                    <progress value={progress.percentage} max="100">
-                    {progress.percentage}%
-                    </progress>
-                )} */}
 
                     <button type="submit" className="btn btn-primary">
                         Guardar
