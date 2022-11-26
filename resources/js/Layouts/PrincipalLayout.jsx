@@ -39,6 +39,16 @@ const PrincipalLayout = ({ children }) => {
                         </ul>
                     </div>
                 </div>
+                <div className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <button
+                        className="btn btn-dark"
+                        onClick={() => {
+                            location.href = route("car-shopping");
+                        }}
+                    >
+                        <i className="fa-solid fa-cart-shopping"></i>
+                    </button>
+                </div>
             </nav>
             <main>{children}</main>
         </>

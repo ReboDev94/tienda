@@ -95,4 +95,9 @@ class ProductoController extends Controller
 
         return redirect("/productos");
     }
+
+    public function carrito()
+    {
+        return Inertia::render('productos/Carrito');
+    }
 }

@@ -29,6 +29,7 @@ Route::prefix('productos')->group(function () {
 
     Route::get('/editar/{producto}', [ProductoController::class, 'edit'])->name('editProduct');
     Route::patch('/editar/{producto}', [ProductoController::class, 'update'])->name('updateProduct');
+    Route::get('/carrito', [ProductoController::class, 'carrito'])->name('car-shopping');
 });
 
 
