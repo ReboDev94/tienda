@@ -41,6 +41,7 @@ const Productos = ({ productos }) => {
                             <th scope="col">Imagen</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Opciones</th>
                         </tr>
@@ -54,6 +55,7 @@ const Productos = ({ productos }) => {
                                 precio,
                                 categoria,
                                 image_uri,
+                                stock,
                             }) => (
                                 <tr key={id}>
                                     <th>{id}</th>
@@ -67,6 +69,7 @@ const Productos = ({ productos }) => {
                                     </td>
                                     <td>{nombre}</td>
                                     <td>${precio}</td>
+                                    <td>{stock}</td>
                                     <td>{categoria.nombre}</td>
                                     <td>
                                         <div className="d-flex gap-2">

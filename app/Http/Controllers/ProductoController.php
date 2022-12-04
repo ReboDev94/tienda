@@ -29,6 +29,7 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'image' => 'required',
             'precio' => 'required|numeric',
+            'stock' => 'required|numeric',
             'categoria_id' => 'required|integer',
         ]);
 
@@ -38,6 +39,7 @@ class ProductoController extends Controller
 
         $nombre = $request->input('nombre');
         $precio = $request->input('precio');
+        $stock = $request->input('stock');
         $categoria_id = $request->input('categoria_id');
 
 
@@ -47,6 +49,7 @@ class ProductoController extends Controller
         $producto->nombre = $nombre;
         $producto->image = $image;
         $producto->precio = $precio;
+        $producto->stock = $stock;
         $producto->categoria_id = $categoria_id;
         $producto->save();
 
@@ -71,6 +74,7 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             // 'image' => 'nullable|file',
             'precio' => 'required|numeric',
+            'stock' => 'required|numeric',
             'categoria_id' => 'required|integer',
         ]);
 
@@ -85,10 +89,12 @@ class ProductoController extends Controller
 
         $nombre = $request->input('nombre');
         $precio = $request->input('precio');
+        $stock = $request->input('stock');
         $categoria_id = $request->input('categoria_id');
 
         $producto->nombre = $nombre;
         $producto->precio = $precio;
+        $producto->stock = $stock;
         $producto->categoria_id = $categoria_id;
         $producto->save();
 

@@ -36,6 +36,11 @@ const PrincipalLayout = ({ children }) => {
                                     Productos
                                 </a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href={route("ventas")}>
+                                    Mis compras
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

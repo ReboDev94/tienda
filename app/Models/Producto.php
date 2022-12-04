@@ -17,7 +17,8 @@ class Producto extends Model
     protected $fillable = [
         'nombre',
         'precio',
-        'image'
+        'image',
+        'stock'
     ];
 
     protected $appends = [

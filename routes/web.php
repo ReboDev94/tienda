@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\PagosController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,6 +33,12 @@ Route::prefix('productos')->group(function () {
     Route::patch('/editar/{producto}', [ProductoController::class, 'update'])->name('updateProduct');
     Route::get('/carrito', [ProductoController::class, 'carrito'])->name('car-shopping');
 });
+
+Route::prefix('ventas')->group(function () {
+    Route::get('/', [VentasController::class, 'index'])->name('ventas');
+});
+
+Route::post('/pagar', [PagosController::class, 'pagar'])->name('pagar');
 
 
 require __DIR__ . '/auth.php';

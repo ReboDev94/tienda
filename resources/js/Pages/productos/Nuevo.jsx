@@ -10,6 +10,7 @@ const Nuevo = ({ categorias, producto }) => {
         nombre: "",
         image: null,
         precio: 0,
+        stock: 0,
         categoria_id: "",
     });
 
@@ -29,8 +30,9 @@ const Nuevo = ({ categorias, producto }) => {
     useEffect(() => {
         if (producto) {
             setIsEdit(true);
-            const { id, nombre, precio, categoria_id, image_uri } = producto;
-            setData({ id, nombre, precio, categoria_id });
+            const { id, nombre, precio, categoria_id, image_uri, stock } =
+                producto;
+            setData({ id, nombre, precio, categoria_id, stock });
             setCurrentImg(image_uri);
         }
     }, []);
@@ -78,6 +80,26 @@ const Nuevo = ({ categorias, producto }) => {
                             onBlur={(e) => {
                                 setData(
                                     "precio",
+                                    Number(e.target.value).toFixed(2)
+                                );
+                            }}
+                            className="form-control"
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="stock" className="form-label">
+                            Stock
+                        </label>
+                        <input
+                            id="stock"
+                            type="number"
+                            value={data.stock}
+                            onChange={(e) => setData("stock", e.target.value)}
+                            required
+                            onBlur={(e) => {
+                                setData(
+                                    "stock",
                                     Number(e.target.value).toFixed(2)
                                 );
                             }}

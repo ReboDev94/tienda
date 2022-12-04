@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PrincipalLayout from "@/Layouts/PrincipalLayout";
+import { Inertia } from "@inertiajs/inertia";
 
 const Carrito = () => {
+    const [loading, setLoading] = useState(false);
     const initialProducts = JSON.parse(localStorage.getItem("carrito")) || [];
     const [productos, setProductos] = useState(initialProducts);
 
@@ -25,10 +27,39 @@ const Carrito = () => {
     const addAmount = (id) => {
         setProductos((prev) => [
             ...prev.map((p) => {
-                if (p.id === id) return { ...p, cantidad: +p.cantidad + 1 };
+                if (p.id === id && p.cantidad + 1 <= p.stock)
+                    return { ...p, cantidad: +p.cantidad + 1 };
                 return p;
             }),
         ]);
+    };
+
+    const total = useMemo(
+        () =>
+            productos.reduce((acc, cv) => {
+                return acc + cv.cantidad * cv.precio;
+            }, 0),
+        [productos]
+    );
+
+    const payment = () => {
+        setLoading(true);
+        Inertia.post(
+            route("pagar", { productos }),
+            {},
+            {
+                onSuccess: (page) => {
+                    localStorage.removeItem("carrito");
+                    location.href = route("ventas");
+                },
+                onError: (errors) => {
+                    console.log(errors);
+                },
+                onFinish: () => {
+                    setLoading(false);
+                },
+            }
+        );
     };
 
     useEffect(() => {
@@ -39,7 +70,6 @@ const Carrito = () => {
         <PrincipalLayout>
             <div className="container py-5">
                 <h1 className="mb-4">Carrito de compras</h1>
-
                 <table className="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -72,12 +102,14 @@ const Carrito = () => {
                                             <button
                                                 className="btn btn-danger"
                                                 onClick={() => remove(id)}
+                                                disabled={loading}
                                             >
                                                 <i className="fa-solid fa-trash"></i>
                                             </button>
                                             <button
                                                 className="btn btn-primary"
                                                 onClick={() => addAmount(id)}
+                                                disabled={loading}
                                             >
                                                 <i className="fa-solid fa-plus"></i>
                                             </button>
@@ -86,6 +118,7 @@ const Carrito = () => {
                                                 onClick={() =>
                                                     subAmount(id, cantidad)
                                                 }
+                                                disabled={loading}
                                             >
                                                 <i className="fa-solid fa-minus"></i>
                                             </button>
@@ -96,6 +129,24 @@ const Carrito = () => {
                         )}
                     </tbody>
                 </table>
+                <div className="container mt-5">
+                    <div className="row">
+                        <div className="col">
+                            <h2>TOTAL: $ {total} MXN</h2>
+                        </div>
+                        {productos.length > 0 && (
+                            <div className="offset-3 col d-grid">
+                                <button
+                                    className="btn btn-success"
+                                    onClick={payment}
+                                    disabled={loading}
+                                >
+                                    PAGAR
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </PrincipalLayout>
     );
